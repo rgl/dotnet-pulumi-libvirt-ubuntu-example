@@ -8,7 +8,7 @@ This creates an example libvirt QEMU/KVM Virtual Machine using dotnet [Pulumi](h
 
 Create and install the [Ubuntu 20.04 vagrant box](https://github.com/rgl/ubuntu-vagrant) (because this example uses its base disk).
 
-[Install the dotnet 5 SDK](https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu):
+[Install the dotnet 6.0 SDK](https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu):
 
 ```bash
 echo 'export DOTNET_CLI_TELEMETRY_OPTOUT=1' >/etc/profile.d/opt-out-dotnet-cli-telemetry.sh
@@ -17,7 +17,7 @@ wget -qO packages-microsoft-prod.deb "https://packages.microsoft.com/config/ubun
 dpkg -i packages-microsoft-prod.deb
 apt-get install -y apt-transport-https
 apt-get update
-apt-get install -y dotnet-sdk-5.0
+apt-get install -y dotnet-sdk-6.0
 ```
 
 [Install Pulumi](https://www.pulumi.com/docs/get-started/install/):
