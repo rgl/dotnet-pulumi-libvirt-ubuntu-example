@@ -68,6 +68,7 @@ pulumi destroy
   * see https://github.com/pulumi/pulumi/issues/99
   * see https://github.com/pulumi/pulumi/issues/1691
   * see https://github.com/pulumi/examples/tree/master/aws-ts-ec2-provisioners
+* This Pulumi provider is based on the [Terraform libvirt provider (dmacvicar/terraform-provider-libvirt)](https://github.com/dmacvicar/terraform-provider-libvirt).
 
 ## References
 
