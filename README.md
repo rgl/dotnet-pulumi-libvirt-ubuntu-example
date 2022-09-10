@@ -44,6 +44,7 @@ Launch this example:
 source secrets.sh
 pulumi login
 pulumi whoami -v
+pulumi stack init dev
 pulumi up
 ```
 
