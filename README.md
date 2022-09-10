@@ -51,7 +51,7 @@ pulumi up
 Use the example:
 
 ```bash
-ssh vagrant@$(pulumi stack output IpAddress) \
+ssh "vagrant@$(pulumi stack output IpAddress)" \
     lsblk -x KNAME -o KNAME,SIZE,TRAN,SUBSYSTEMS,FSTYPE,UUID,LABEL,MODEL,SERIAL
 ```
 
