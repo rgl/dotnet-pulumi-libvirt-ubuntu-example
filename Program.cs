@@ -1,15 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
+using CliWrap;
+using CliWrap.Buffered;
 using Pulumi;
 using Pulumi.Libvirt;
 using Pulumi.Libvirt.Inputs;
 
-return await Deployment.RunAsync(() =>
+return await Deployment.RunAsync(async () =>
 {
     var sshPublicKeyPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ssh/id_rsa.pub");
     var sshPublicKeyJson = JsonSerializer.Serialize(File.ReadAllText(sshPublicKeyPath).Trim());
+    var baseVolumeName = await GetBaseVolumeName();
 
     // create a cloud-init cloud-config.
     // NB this creates an iso image that will be used by the NoCloud cloud-init datasource.
@@ -50,7 +55,7 @@ runcmd:
 
     var bootVolume = new Volume("boot", new VolumeArgs
     {
-        BaseVolumeName = "ubuntu-20.04-amd64_vagrant_box_image_0_box.img",
+        BaseVolumeName = baseVolumeName,
         Format = "qcow2",
         // NB its not yet possible to create larger disks.
         //    see https://github.com/pulumi/pulumi-libvirt/issues/6
@@ -114,7 +119,24 @@ runcmd:
     });
 
     return new Dictionary<string, object?>
-{
+    {
         ["IpAddress"] = domain.NetworkInterfaces.GetAt(0).Apply(n => n.Addresses[0]),
     };
 });
+
+static async Task<string> GetBaseVolumeName()
+{
+    var result = await Cli.Wrap("virsh")
+        .WithArguments(new[] {"vol-list", "--pool", "default"})
+        .ExecuteBufferedAsync();
+    // e.g.:
+    //   Name                                                        Path
+    //  ------------------------------------------------------------------------------------------------------------------------------------------------
+    //   ubuntu-20.04-amd64_vagrant_box_image_0_1661689571_box.img   /var/lib/libvirt/images/ubuntu-20.04-amd64_vagrant_box_image_0_1661689571_box.img
+    return result.StandardOutput
+        .Split(Environment.NewLine)
+        .Select(line => line.Trim().Split(" ", 2).FirstOrDefault(""))
+        .Where(name => name.StartsWith("ubuntu-20.04-amd64_vagrant_box_image_"))
+        .OrderByDescending(name => name)
+        .First();
+}

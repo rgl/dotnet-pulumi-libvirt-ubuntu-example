@@ -46,6 +46,7 @@ pulumi login
 pulumi whoami -v
 pulumi stack init dev
 pulumi up
+#TF_LOG=TRACE pulumi up --logtostderr --logflow -v=9 2>pulumi.log
 ```
 
 Use the example:
