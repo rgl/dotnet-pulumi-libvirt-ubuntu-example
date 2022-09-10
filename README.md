@@ -23,9 +23,9 @@ apt-get install -y dotnet-sdk-6.0
 [Install Pulumi](https://www.pulumi.com/docs/get-started/install/):
 
 ```bash
-wget https://get.pulumi.com/releases/sdk/pulumi-v3.18.1-linux-x64.tar.gz
-sudo tar xf pulumi-v3.18.1-linux-x64.tar.gz -C /usr/local/bin --strip-components 1
-rm pulumi-v3.18.1-linux-x64.tar.gz
+wget https://get.pulumi.com/releases/sdk/pulumi-v3.39.3-linux-x64.tar.gz
+sudo tar xf pulumi-v3.39.3-linux-x64.tar.gz -C /usr/local/bin --strip-components 1
+rm pulumi-v3.39.3-linux-x64.tar.gz
 ```
 
 Configure the stack:
