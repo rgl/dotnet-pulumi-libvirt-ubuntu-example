@@ -4,9 +4,9 @@ This creates an example libvirt QEMU/KVM Virtual Machine using dotnet [Pulumi](h
 
 **NB** For a terraform equivalent see the [rgl/terraform-libvirt-ubuntu-example](https://github.com/rgl/terraform-libvirt-ubuntu-example) repository.
 
-## Usage (Ubuntu 20.04 host)
+## Usage (Ubuntu 22.04 host)
 
-Create and install the [Ubuntu 20.04 vagrant box](https://github.com/rgl/ubuntu-vagrant) (because this example uses its base disk).
+Create and install the [Ubuntu 22.04 vagrant box](https://github.com/rgl/ubuntu-vagrant) (because this example uses its base disk).
 
 [Install the dotnet 6.0 SDK](https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu):
 

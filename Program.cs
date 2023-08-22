@@ -50,7 +50,7 @@ runcmd:
 
     var bootVolume = new Volume("boot", new VolumeArgs
     {
-        BaseVolumeName = "ubuntu-20.04-amd64_vagrant_box_image_0_box.img",
+        BaseVolumeName = "ubuntu-22.04-amd64_vagrant_box_image_0.0.0_box.img",
         Format = "qcow2",
         // NB its not yet possible to create larger disks.
         //    see https://github.com/pulumi/pulumi-libvirt/issues/6
@@ -114,7 +114,7 @@ runcmd:
     });
 
     return new Dictionary<string, object?>
-{
+    {
         ["IpAddress"] = domain.NetworkInterfaces.GetAt(0).Apply(n => n.Addresses[0]),
     };
 });
