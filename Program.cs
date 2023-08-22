@@ -5,9 +5,14 @@ using System.Text.Json;
 using Pulumi;
 using Pulumi.Libvirt;
 using Pulumi.Libvirt.Inputs;
+using Pulumi.Command.Remote;
+using Pulumi.Command.Remote.Inputs;
 
 return await Deployment.RunAsync(() =>
 {
+    var sshUser = "vagrant";
+    var sshPrivateKeyPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ssh/id_rsa");
+    var sshPrivateKey = File.ReadAllText(sshPrivateKeyPath).Trim();
     var sshPublicKeyPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ssh/id_rsa.pub");
     var sshPublicKeyJson = JsonSerializer.Serialize(File.ReadAllText(sshPublicKeyPath).Trim());
 
@@ -25,7 +30,7 @@ return await Deployment.RunAsync(() =>
 fqdn: example.test
 manage_etc_hosts: true
 users:
-  - name: vagrant
+  - name: {sshUser}
     passwd: '$6$rounds=4096$NQ.EmIrGxn$rTvGsI3WIsix9TjWaDfKrt9tm3aa7SX7pzB.PSjbwtLbsplk1HsVzIrZbXwQNce6wmeJXhCq9YFJHDx9bXFHH.'
     lock_passwd: false
     ssh-authorized-keys:
@@ -113,8 +118,32 @@ runcmd:
         Description = $"path: {Environment.CurrentDirectory}\nproject: {Pulumi.Deployment.Instance.ProjectName}\nstack: {Pulumi.Deployment.Instance.StackName}\n",
     });
 
+    var informationCommand = new Command("information", new CommandArgs
+    {
+        Connection = new ConnectionArgs
+        {
+            Host = domain.NetworkInterfaces.GetAt(0).Apply(n => n.Addresses[0]),
+            User = sshUser,
+            PrivateKey = sshPrivateKey,
+        },
+        Create = "/bin/bash",
+        Stdin = @"
+set -euxo pipefail
+
+# redirect stderr to stdout.
+exec 2>&1
+
+# wait for cloud-init to finish.
+cloud-init status --long --wait
+
+# show information about the block devices.
+lsblk -x KNAME -o KNAME,SIZE,TRAN,SUBSYSTEMS,FSTYPE,UUID,LABEL,MODEL,SERIAL
+",
+    });
+
     return new Dictionary<string, object?>
     {
         ["IpAddress"] = domain.NetworkInterfaces.GetAt(0).Apply(n => n.Addresses[0]),
+        ["Information"] = Output.CreateSecret(informationCommand.Stdout),
     };
 });

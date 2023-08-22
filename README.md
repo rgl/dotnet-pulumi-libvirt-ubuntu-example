@@ -46,6 +46,7 @@ pulumi login
 pulumi whoami -v
 pulumi stack init dev
 pulumi up
+pulumi stack output Information --show-secrets
 ```
 
 Use the example:
@@ -63,11 +64,6 @@ pulumi destroy
 
 ## Notes
 
-* There is not yet a built-in way to execute ad-hoc provision commands à-la
-  terraform `remote-exec`.
-  * see https://github.com/pulumi/pulumi/issues/99
-  * see https://github.com/pulumi/pulumi/issues/1691
-  * see https://github.com/pulumi/examples/tree/master/aws-ts-ec2-provisioners
 * This Pulumi provider is based on the [Terraform libvirt provider (dmacvicar/terraform-provider-libvirt)](https://github.com/dmacvicar/terraform-provider-libvirt).
 
 ## References
