@@ -19,7 +19,7 @@ return await Deployment.RunAsync(() =>
     // create a cloud-init cloud-config.
     // NB this creates an iso image that will be used by the NoCloud cloud-init datasource.
     // see https://www.pulumi.com/docs/reference/pkg/libvirt/cloudinitdisk/
-    // see journactl -u cloud-init
+    // see journalctl -u cloud-init
     // see /run/cloud-init/*.log
     // see https://cloudinit.readthedocs.io/en/latest/topics/examples.html#disk-setup
     // see https://cloudinit.readthedocs.io/en/latest/topics/datasources/nocloud.html#datasource-nocloud

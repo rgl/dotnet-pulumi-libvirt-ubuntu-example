@@ -1,5 +1,4 @@
 .pulumi/
-.vscode/
 bin/
 obj/
 secrets*
